@@ -28,5 +28,5 @@ jobs:
     
       - name: run Retire.JS Scan
         run: | 
-          safety check
+          safety check -o safetyoutput.txt
         

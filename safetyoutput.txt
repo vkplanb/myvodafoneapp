@@ -1,0 +1,4 @@
+safety report
+checked 16 packages, using free DB (updated once a month)
+---
+No known security vulnerabilities found.
