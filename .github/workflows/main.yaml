@@ -1,5 +1,5 @@
 name: DevSecOps Workflow for MyVodafoneApp
-#on: [push]
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
