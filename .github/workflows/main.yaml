@@ -31,7 +31,7 @@ jobs:
 
       - name: run Retire.JS Scan
         run: | 
-          retire --outputformat json --outputpath retire_output.json
+          retire --outputformat json --outputpath retire_output.json --exitwith 0
           echo $?
 
   deployment:
