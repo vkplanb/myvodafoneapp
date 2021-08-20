@@ -86,13 +86,10 @@ jobs:
 
   deployment:
     runs-on: ubuntu-latest
-    needs: oast-retire
+    needs: [oast-retire, oast-safety, oast-npmscan]
     steps:
       - run: |
           echo "deployment Job is going on"
           sleep 20
-
-
-
 
 
