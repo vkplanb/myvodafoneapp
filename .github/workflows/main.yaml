@@ -8,7 +8,7 @@ jobs:
           echo "Build Job is going on"
           sleep 20
 
-  test: 
+  test:
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -16,14 +16,32 @@ jobs:
           echo "test Job is going on"
           sleep 20
 
-#  oast-retire:
- #   runs-on: ubuntu-latest
-  #  needs: test
-   # steps:
-    #  - name: Clone the Repository
-     #   uses: actions/checkout@v2
+  oast-retire:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Clone the Repository
+        uses: actions/checkout@v2
 
-  oast-npm:
+      - name: Install Retire.JS
+        run: npm install -g retire
+
+      - name: Install Node Modules
+        run: npm install
+
+      - name: run Retire.JS Scan
+        run: | 
+          retire --outputformat json --outputpath retire-output.json
+        continue-on-error: true
+
+      - name: Upload the Retire.JS Output file
+        uses: actions/upload-artifact@v2
+        with:
+          name: RetireJS-Output-File
+          path: retire-output.json
+        if: always()
+
+  oast-safety:
     runs-on: ubuntu-latest
     needs: test
     steps:
@@ -31,17 +49,38 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install Safety
-        run: npm install
+        run: pip install safety
 
-      - name: run npm Scan
-        run: npm audit | tee npmoutput.txt
+      - name: run Safety Scan
+        run: safety check -r requirements.txt --json -o safety-output.json
         continue-on-error: true
       
-      - name: Upload the npm Output file
+      - name: Upload the Safety Output file
         uses: actions/upload-artifact@v2
-        #with:
-        #  name: npm-Output-file
-        #  path: npmoutput.json
+        with:
+          name: Safety-Output-file
+          path: safety-output.json
+        if: always()
+
+  oast-npmscan:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Clone the Repository
+        uses: actions/checkout@v2
+
+      - name: Install Node Modules
+        run: npm install
+
+      - name: run npm Audit
+        run: npm audit --json | tee npmaudit-output.json
+        continue-on-error: true
+      
+      - name: Upload the Safety Output file
+        uses: actions/upload-artifact@v2
+        with:
+          name: NPMAudit-Output-file
+          path: npmaudit-output.json
         if: always()
 
 
@@ -52,5 +91,8 @@ jobs:
       - run: |
           echo "deployment Job is going on"
           sleep 20
+
+
+
 
 
