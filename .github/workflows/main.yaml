@@ -26,7 +26,8 @@ jobs:
       - name: pip install safety
         run: pip install safety
     
-      - name: run Retire.JS Scan
+      - name: run safety
         run: | 
           safety check -r requirements.txt --json -o safetyoutput.json
+          exit 0 
         
