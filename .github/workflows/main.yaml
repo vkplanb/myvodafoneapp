@@ -31,8 +31,8 @@ jobs:
 
       - name: run Retire.JS Scan
         run: | 
-          retire --outputformat json --outputpath retire_output.json --exitwith 0
-          echo $?
+          retire --outputformat json --outputpath retire_output.json
+        continue-on-error: true
 
   deployment:
     runs-on: ubuntu-latest
