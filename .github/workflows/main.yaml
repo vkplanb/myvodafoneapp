@@ -5,16 +5,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-        echo "Build Job is going on"
-        sleep 20
+          echo "Build Job is going on"
+          sleep 20
 
   test:
     runs-on: ubuntu-latest
     needs: build
     steps:
       - run: |
-        echo "test Job is going on"
-        sleep 20
+          echo "test Job is going on"
+          sleep 20
 
   oast-retire:
     runs-on: ubuntu-latest
