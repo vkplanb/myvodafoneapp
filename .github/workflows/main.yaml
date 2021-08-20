@@ -23,11 +23,52 @@ jobs:
       - name: Clone the Repository
         uses: actions/checkout@v2
 
-      - name: pip install safety
-        run: pip install safety
-    
-      - name: run safety
+      - name: Install Retire.JS
+        run: npm install -g retire
+
+      - name: Install Node Modules
+        run: npm install
+
+      - name: run Retire.JS Scan
         run: | 
-          safety check -r requirements.txt --json -o safetyoutput.json
-        continue-on-error: true 
-        
+          retire --outputformat json --outputpath retire-output.json
+        continue-on-error: true
+
+      - name: Upload the Retire.JS Output file
+        uses: actions/upload-artifact@v2
+        with:
+          name: RetireJS-Output-File
+          path: retire-output.json
+        if: always()
+
+  oast-safety:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Clone the Repository
+        uses: actions/checkout@v2
+
+      - name: Install Safety
+        run: pip install safety
+
+      - name: run Safety Scan
+        run: safety check -r requirements.txt --json -o safety-output.json
+        continue-on-error: true
+      
+      - name: Upload the Safety Output file
+        uses: actions/upload-artifact@v2
+        with:
+          name: Safety-Output-file
+          path: safety-output.json
+        if: always()
+
+
+  deployment:
+    runs-on: ubuntu-latest
+    needs: oast-retire
+    steps:
+      - run: |
+          echo "deployment Job is going on"
+          sleep 20
+
+
