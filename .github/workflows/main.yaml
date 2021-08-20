@@ -29,5 +29,5 @@ jobs:
       - name: run safety
         run: | 
           safety check -r requirements.txt --json -o safetyoutput.json
-          exit 0 
+          continue-on-error: true 
         
