@@ -23,10 +23,24 @@ jobs:
       - name: Clone the Repository
         uses: actions/checkout@v2
 
-      - name: pip install safety
-        run: pip install safety
-    
+      - name: Install Retire.JS
+        run: npm install -g retire
+
+      - name: Install Node Modules
+        run: npm install
+
       - name: run Retire.JS Scan
         run: | 
-          safety check
-        
+          retire --outputformat json --outputpath retire_output.json
+        continue-on-error: true
+
+  deployment:
+    runs-on: ubuntu-latest
+    needs: oast-retire
+    steps:
+      - run: |
+          echo "deployment Job is going on"
+          sleep 25
+
+
+
