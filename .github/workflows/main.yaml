@@ -34,5 +34,13 @@ jobs:
           retire --outputformat json --outputpath retire_output.json
           echo $?
 
+  deployment:
+    runs-on: ubuntu-latest
+    needs: oast-retire
+    steps:
+      - run: |
+          echo "deployment Job is going on"
+          sleep 20
+
 
 
